@@ -63,20 +63,41 @@ if(plik==NULL){
 }
 
 
+WskNaListe wstawDoListy(char klucz){
+WskNaListe tmp=(WskNaListe)malloc(sizeof(TLISTA));
+
+if(ELEMENTS==NULL){
+ELEMENTS->korzen=nowyWezel(klucz);
+}else{  //jesli nie to przenosimy uklad do zmiennej tymczasowej
+tmp->korzen=nowyWezel(klucz);
+tmp->prev=ELEMENTS;
+ELEMENTS->next=tmp;
+ELEMENTS=tmp;
+}
+return ELEMENTS;
+}
+
+
 
 WskNaListe uzupelnijListe(){
 
 WskNaListe temp=(WskNaListe)malloc(sizeof(TLISTA));
 
+int zakres;
+char znak;
 
-ELEMENTS->korzen=nowyWezel('\t');
-temp=ELEMENTS;
-temp->korzen=nowyWezel('\n');
-ELEMENTS->
-
-
-
-
+wstawDoListy('\t');
+wstawDoListy('\n');
+wstawDoListy(' ');
+for(zakres='A';zakres<='Z';zakres++){
+    znak=zakres;
+    wstawDoListy(znak);
+}
+for(zakres='a';zakres<='z';zakres++){
+    znak=zakres;
+    wstawDoListy(znak);
+}
+printf("ostatni: %c przedostatni: %c biezacy: %c",ELEMENTS->prev->prev->korzen->znak,ELEMENTS->prev->korzen->znak,ELEMENTS->korzen->znak);
 return ELEMENTS;
 }
 
@@ -84,6 +105,7 @@ int main(){
 
 
 listaInit();
+uzupelnijListe();
 
 
 
