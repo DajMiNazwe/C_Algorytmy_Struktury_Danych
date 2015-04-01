@@ -2,13 +2,14 @@
 #include <string.h>
 #include <stdlib.h>
 
-
+//MARCIN HALLMAN
+//224705
+//KOD HUFFMANA
 
 /*Pomocnicza deklaracja wskaznikow(skraca zapis)*/
 typedef struct wezel *WskNaWezel;
 typedef struct lista *WskNaListe;
-int a[100];
-int pozycja=0;
+int aa=0;
 
 
 
@@ -57,7 +58,6 @@ ELEMENTS=(WskNaListe)malloc(sizeof(TLISTA));
 ELEMENTS->prev=NULL;
 ELEMENTS->next=NULL;
 ELEMENTS->korzen=NULL;
-//return ELEMENTS;
 }
 
 
@@ -70,21 +70,16 @@ void znajdzPoczatek(){
 while(ELEMENTS->prev!=NULL){
     ELEMENTS=ELEMENTS->prev;
 }
-//printf("%i %i\n",ELEMENTS->korzen->znak,ELEMENTS->korzen->ile_razy);
-//return ELEMENTS;
 }
 
 
 
 /*FUNKCJA "ODPORWADZAJACA" WSKAZNIK NA KONIEC LISTY*/
 void znajdzKoniec(){
-printf("SZUKAM\n");
 
 while(ELEMENTS->next!=NULL){
     ELEMENTS=ELEMENTS->next;
 }
-printf("%i %i\n",ELEMENTS->korzen->znak,ELEMENTS->korzen->ile_razy);
-//return ELEMENTS;
 }
 
 
@@ -99,10 +94,10 @@ void wczytajPlik(){
      plik=fopen("tekst.txt","r");
       if(plik==NULL){
         fclose(plik);
-        printf("->Brak pliku z tekstem\n");
+        printf("->BRAK PLIKU Z TEKSTEM\n\n");
       }
       else{
-        printf("->Wykryto plik z tekstem\n");
+        printf("->WYKRYTO PLIK Z TEKSTEM\n\n");
         c=getc(plik);
         while(c!=EOF){//pobieranie znaku
         znajdzPoczatek();
@@ -115,7 +110,7 @@ void wczytajPlik(){
         }
            c=getc(plik);//pobieranie nastepnego znaku
         }
-        znajdzPoczatek();
+        znajdzPoczatek();//wskaznik na poczatek listy
         fclose(plik);
     }
 
@@ -199,26 +194,26 @@ for(zakres='a';zakres<='z';zakres++){
     wstawDoListy(znak,0);
     licznik++;
 }
-printf("LISTA MA TYLE: %i ELEMENTOW\n\n",licznik);
+printf("LISTA MA : %i ELEMENTOW\n\n",licznik);
 ELEMENTS->next=NULL;
 return ELEMENTS;
 }
 
 
 
-
+/*FUNKCJA SZUKAJACA NAJMNIEJSZYCH ELEMENTOW I LACZACA JE W JEDEN WEZEL(nastepnie dodaje go do listy)*/
 WskNaWezel szukajNajmniejszy(){
 
-WskNaWezel pierwszy/*=(WskNaWezel)malloc(sizeof(TWEZEL))*/;
+/*zmienne strukturalne pomocnicze*/
+WskNaWezel pierwszy;
+WskNaListe tmp;
+WskNaListe pierwszyLista;
 
 
-WskNaListe tmp/*=(WskNaListe)malloc(sizeof(TLISTA))*/;
-WskNaListe pierwszyLista/*=(WskNaListe)malloc(sizeof(TLISTA))*/;
-
-
-znajdzPoczatek();
+znajdzPoczatek();//wskaznik na poczatek listy
 tmp=ELEMENTS;
 pierwszyLista=tmp;
+
 
 tmp=tmp->next;
 while(tmp!=NULL){
@@ -228,84 +223,68 @@ while(tmp!=NULL){
     }
     tmp=tmp->next;
 }
-    if(pierwszyLista->prev==NULL){
-        printf("KOLIZJA\n");
-        /*printf("Pierwszy najmniejszy: %i | %i\n\n",pierwszyLista->korzen->znak,pierwszyLista->korzen->ile_razy);
-        printf("Pierwszy najmniejszy-next: %i | %i\n\n",pierwszyLista->next->korzen->znak,pierwszyLista->next->korzen->ile_razy);
-        printf("tmp: %i | %i\n\n",tmp->korzen->znak,tmp->korzen->ile_razy);*/
+    if(pierwszyLista->prev==NULL){//element jest pierwszy na liscie(od lewej)
+        //printf("KOLIZJA\n");
         pierwszy=pierwszyLista->korzen;
         tmp=pierwszyLista;
         tmp=tmp->next;
-       /* printf("tmp: %i | %i\n\n",tmp->korzen->znak,tmp->korzen->ile_razy);
-        printf("tmp-next: %i | %i\n\n",tmp->next->korzen->znak,tmp->next->korzen->ile_razy);*/
         tmp->prev=NULL;
-    }else if(pierwszyLista->next==NULL){
-        printf("KOLIZJA2\n");
+    }else if(pierwszyLista->next==NULL){//element jest pierwszy na liscie(od prawej) | inaczej ujmuj¹c jest elementem ostatnim
+        //printf("KOLIZJA2\n");
         pierwszy=pierwszyLista->korzen;
         tmp=pierwszyLista;
         tmp=tmp->prev;
         tmp->next=NULL;
-    }else{
-        printf("KOLIZJA3\n");
+    }else{//element lezy gdzies w srodku listy
+        //printf("KOLIZJA3\n");
         pierwszy=pierwszyLista->korzen;
         tmp=pierwszyLista;
-        /*printf("tmp: %i | %i\n\n",tmp->korzen->znak,tmp->korzen->ile_razy);
-        printf("tmp-prev: %i | %i\n\n",tmp->prev->korzen->znak,tmp->prev->korzen->ile_razy);
-        printf("tmp-next: %i | %i\n\n",tmp->next->korzen->znak,tmp->next->korzen->ile_razy);*/
         tmp->prev->next=tmp->next;
         tmp->next->prev=tmp->prev;
     }
 
     ELEMENTS=tmp;
-    znajdzPoczatek();
-   /* printf("Poczatek: %i | %i\n\n",ELEMENTS->korzen->znak,ELEMENTS->korzen->ile_razy);
-    printf("Pierwszy: %i | %i\n\n",pierwszy->znak,pierwszy->ile_razy);*/
+    znajdzPoczatek();//wskaznik na poczatek
 return pierwszy;
 }
 
 
 
-
-
-void drukujTablice(int tablica[], int pozycja){
-    int i;
-    for (i=0;i<pozycja;++i){
-		printf("%i", tablica[i]);
-		printf("\n");
-		}
-		}
-
-
-void drukujKod(WskNaListe poczatek, int tablica[], int pozycja)
+/*FUNKCJA PRZESZUKUJACA DRZEWO 'inorder' I WYPISUJACA KOD DLA POSZCZEGOLNYCH ZNAKOW*/
+void Inorder(WskNaWezel wezel, char tablica[], int dlugosc)
 {
-    if (poczatek->korzen->left)
-    {
-        tablica[pozycja] = 0;
-        drukujKod(poczatek->korzen->left, tablica, pozycja + 1);
+    int i;
+    if(!(wezel->left)){
+        if(wezel->znak=='\t'){
+            printf("Tabulatory: ");
+        }else if(wezel->znak=='\n'){
+            printf("Nowe linie: ");
+        }else if(wezel->znak==' '){
+            printf("Spacje: ");
+        }else{
+            printf(" %c: ",wezel->znak);
+        }
+    for(i=0; i<dlugosc; i++){
+        printf("%c",tablica[i]);
     }
-
-    if (poczatek->korzen->right)
-    {
-        tablica[pozycja] = 1;
-        drukujKod(poczatek->korzen->right, tablica, pozycja + 1);
-    }
-
-    if (poczatek->korzen->left=NULL && poczatek->korzen->right==NULL)
-    {
-        printf("%c: ", poczatek->korzen->znak);
-        drukujTablice(tablica, pozycja);
-    }
+    printf("\n");
+  }
+  else
+  {
+    tablica[dlugosc] = '0'; Inorder(wezel->left,tablica,dlugosc + 1);
+    tablica[dlugosc] = '1'; Inorder(wezel->right,tablica,dlugosc + 1);
+  }
 }
 
 
 
 
 
-
-
+/*SERCE PROGRAMU CZYLI ALGORYTM HUFFMANA*/
 void Huffman(){
 int i=0;
 
+/*zmienne strukturalne pomocnicze na sam koniec*/
 WskNaWezel X=(WskNaWezel)malloc(sizeof(TWEZEL));
 WskNaWezel Y=(WskNaWezel)malloc(sizeof(TWEZEL));
 WskNaWezel XY=(WskNaWezel)malloc(sizeof(TWEZEL));
@@ -314,11 +293,11 @@ int ile;
 /*LACZENIE W PETLI WEZLOW LISCI*/
 for(i=0;i<63;i++){
 int laczna_ilosc=0;
+/*zmienne strukturalne pomocnicze dzialajace w petli*/
 WskNaWezel najwiekszyX=(WskNaWezel)malloc(sizeof(TWEZEL));
 WskNaWezel najwiekszyY=(WskNaWezel)malloc(sizeof(TWEZEL));
 WskNaWezel laczony=(WskNaWezel)malloc(sizeof(TWEZEL));
 najwiekszyX=szukajNajmniejszy();
-printf("najwiekszyX: %i | %i\n",najwiekszyX->znak,najwiekszyX->ile_razy);
 
 
 najwiekszyY = szukajNajmniejszy();
@@ -326,13 +305,15 @@ laczna_ilosc=najwiekszyX->ile_razy + najwiekszyY->ile_razy;
 laczony=nowyWezel('?',laczna_ilosc);
 laczony->left= najwiekszyX;
 laczony->right= najwiekszyY;
-printf("laczony: %i | %i\n\n",laczony->znak,laczony->ile_razy);
+
+
+/*printf("laczony: %i | %i\n\n",laczony->znak,laczony->ile_razy);
 printf("left: %i | %i\n\n",laczony->left->znak,laczony->left->ile_razy);
-printf("right: %i | %i\n\n",laczony->right->znak,laczony->right->ile_razy);
+printf("right: %i | %i\n\n",laczony->right->znak,laczony->right->ile_razy);*/
 
 znajdzPoczatek();
 wstawWezelDoListy(laczony);
-printf("ELEMENTS: %i | %i\n\n",ELEMENTS->korzen->znak,ELEMENTS->korzen->ile_razy);
+//printf("ELEMENTS: %i | %i\n\n",ELEMENTS->korzen->znak,ELEMENTS->korzen->ile_razy);
 }
 
 /*LACZENIE 2 OSTATNICH ELEMENTOW*/
@@ -341,30 +322,38 @@ X=ELEMENTS->korzen;
 Y=ELEMENTS->next->korzen;
 ile=X->ile_razy + Y->ile_razy;
 XY=nowyWezel('?',ile);
+XY->left=X;
+XY->right=Y;
 wstawWezelDoListy(XY);
 znajdzPoczatek();
 ELEMENTS->next=NULL;
 
 /*DRUK KONTROLNY SPRAWDZAJACY CZY NA LISCIE JEST OSTATNI ELEMENT*/
-printf("ELEMENTS: %i | %i\n\n",ELEMENTS->korzen->znak,ELEMENTS->korzen->ile_razy);
 if(ELEMENTS->prev==NULL){
-    printf("prev==NULL\n");
+    printf("prev==NULL\n\n");
 }
 if(ELEMENTS->next==NULL){
-    printf("next==NULL\n");
+    printf("next==NULL\n\n");
 }
-drukujKod(ELEMENTS,a,pozycja);
 }
 
-
+/*MAIN*/
 int main(){
 
+char wynikowa[256];
+int pozycja=0;
 
-listaInit();
-uzupelnijListe();
-wczytajPlik();
-znajdzKoniec();
+printf("ALGORYTM HUFFMANA\n");
+printf("*****************\n\n");
+listaInit();//inicjalizacja listy
+uzupelnijListe();//uzupelnienie jej wezlami(pustymi)
+wczytajPlik();//zliczanie wystapien znakow
+znajdzKoniec();//sprawdzanie czy lista jest prawidlowa/szukanie konca
 Huffman();
+WskNaWezel koniec=ELEMENTS->korzen;
+printf("*********************\n");
+printf("KODY:\n\n");
+Inorder(koniec,wynikowa,pozycja);//wypisanie
 
 
 return 0;
