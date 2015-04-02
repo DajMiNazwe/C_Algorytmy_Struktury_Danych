@@ -10,7 +10,8 @@
 typedef struct wezel *WskNaWezel;
 typedef struct lista *WskNaListe;
 int aa=0;
-
+int licznik_znakow=0;
+int licznik_bitow=0;
 
 
 
@@ -104,6 +105,7 @@ void wczytajPlik(){
         while(ELEMENTS->next!=NULL){//przeszukiwanie listy
            if(ELEMENTS->korzen->znak==c){
                ELEMENTS->korzen->ile_razy++;//zliczanie wystapien
+               licznik_znakow++;
         //       printf("znak:%c | ilosc wystapien: %i\n",ELEMENTS->korzen->znak,ELEMENTS->korzen->ile_razy);
             }
             ELEMENTS=ELEMENTS->next;
@@ -266,6 +268,7 @@ void Inorder(WskNaWezel wezel, char tablica[], int dlugosc)
         }
     for(i=0; i<dlugosc; i++){
         printf("%c",tablica[i]);
+        licznik_bitow=licznik_bitow+1;
     }
     printf("\n");
   }
@@ -354,6 +357,13 @@ WskNaWezel koniec=ELEMENTS->korzen;
 printf("*********************\n");
 printf("KODY:\n\n");
 Inorder(koniec,wynikowa,pozycja);//wypisanie
+printf("\n\n");
+printf("POROWNANIE DLUGOSCI:\n");
+printf("*******************\n\n");
+licznik_znakow=licznik_znakow*8;
+printf("Dlugosc tekstu w zapisie znakow na 8 bitach w pliku: %i\n",licznik_znakow);
+printf("Ilosc bitow w kodzie: %i\n",licznik_bitow);
+
 
 
 return 0;
