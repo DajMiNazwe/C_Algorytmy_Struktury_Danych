@@ -1,0 +1,25 @@
+FUNKCJA HASZUJACA: wyraz+=(litera)mod7
+
+
+**HASZOWANIE**
+1.	tablica wypelniona 50% ilosc rekordow 3000:
+
+	a)srednia ilosc prob przy haszowaniu rekordow: 1476
+
+	b)ilosc prob przy wstawianiu nazwiska "Pawlak" przy wypelnieniu 50%: 2977
+
+
+2.	tablica wypelniona 70% ilosc rekordow 7000
+
+	a)srednia ilosc prob przy haszowaniu rekordow: 3476
+
+	b)ilosc prob przy wstawianiu nazwiska "Pawlak" przy wypelnieniu 70%: 6977
+
+
+3.	tablica wypelniona 90% ilosc rekordow 9000
+
+	a)srednia ilosc prob przy haszowaniu rekordow: 4476
+
+	b)ilosc prob przy wstawianiu nazwiska "Pawlak" przy wypelnieniu 90%: 8977
+
+
