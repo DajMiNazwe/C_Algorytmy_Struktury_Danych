@@ -6,10 +6,10 @@
 
 
 //MARCIN HALLMAN
-//album: 224705
+//numer albumu: 224705
 
 /*DEKLARACJA WSKAZNIKA*/
-typedef struct wezel *WskNaWezel; //mozna umiescic zamiast tutaj w strukturze ale ten sposob ladniej wyglada i jest porêczniej
+typedef struct wezel *WskNaWezel; //mozna umiescic zamiast tutaj w strukturze ale ten sposob ladniej wyglada i jest porÃªczniej
 
 /*DEKLARACJA STRUKTURY WEZLA*/
 typedef struct wezel{
@@ -197,7 +197,7 @@ void DRUKUJ(WskNaWezel root)
 	}
 }
 
-/*FUNKCJA ZLICZAJ¥CA CZERWONE WÊZ£Y*/
+/*FUNKCJA ZLICZAJÂ¥CA CZERWONE WÃŠZÂ£Y*/
 int COUNT_RED(WskNaWezel root)
 {
 	if(root!=NIL)
